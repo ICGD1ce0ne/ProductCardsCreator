@@ -29,6 +29,8 @@ total_left_height = (product_label_height + product_scroll_height +
 # Высота для правого фрейма
 settings_frame_height = total_left_height
 
+
+
 ProductLabelFrame = CTkFrame(MainWindow,
                              width=860,
                              height=product_label_height,
@@ -36,7 +38,7 @@ ProductLabelFrame = CTkFrame(MainWindow,
 ProductLabelFrame.place(x=LeftFramesPositionFromX, y=top_margin)
 
 ProductLabel = CTkLabel(ProductLabelFrame,
-                        text='Выбор шаблона',
+                        text='Добавленные карточки',
                         text_color='#FFFFFF',
                         font=('Arial', 20))
 
@@ -51,6 +53,8 @@ position_product_label_y = (frame_height_product_label - label_height_product) /
 
 ProductLabel.place(x=position_product_label_x, y=position_product_label_y)
 
+
+
 ProductScrollBarFrame = CTkFrame(MainWindow,
                                  width=860,
                                  height=product_scroll_height,
@@ -63,14 +67,18 @@ ProductScrollableFrame = CTkScrollableFrame(MainWindow,
                                           corner_radius=6)
 ProductScrollableFrame.place(x=LeftFramesPositionFromX, y=top_margin + product_label_height + between_margin)
 
+
+
 ProductAddButtonFrame = CTkFrame(MainWindow,
                                  width=860,
                                  height=product_button_height,
-                                 corner_radius=6)
+                                 corner_radius=6,
+                                 fg_color="transparent")
 ProductAddButtonFrame.place(x=LeftFramesPositionFromX,
                             y=top_margin + product_label_height + between_margin + product_scroll_height + between_margin)
 
-ProductAddButton = CTkButton(ProductAddButtonFrame,
+# Создаем обе кнопки в основном фрейме
+ProductButtonAdd = CTkButton(ProductAddButtonFrame,
                              width=330,
                              height=55,
                              text_color='#FFFFFF',
@@ -79,16 +87,45 @@ ProductAddButton = CTkButton(ProductAddButtonFrame,
                              fg_color='#540070',
                              corner_radius=9)
 
+ProductButtonCreate = CTkButton(ProductAddButtonFrame,
+                                width=330,
+                                height=55,
+                                text_color='#FFFFFF',
+                                font=('Arial', 18),
+                                text="Создать",
+                                fg_color='#540070',
+                                corner_radius=9)
+
+# Обновляем окно для получения актуальных размеров
 MainWindow.update()
-frame_height_product = ProductAddButtonFrame.winfo_reqheight()
-add_product_button_height = ProductAddButton.winfo_reqheight()
-position_add_product_button_y = (frame_height_product - add_product_button_height) // 2
 
+# Получаем размеры фрейма и кнопок
 frame_width_product = ProductAddButtonFrame.winfo_reqwidth()
-add_product_button_width = ProductAddButton.winfo_reqwidth()
-position_add_product_button_x = (frame_width_product - add_product_button_width) // 2
+frame_height_product = ProductAddButtonFrame.winfo_reqheight()
 
-ProductAddButton.place(x=position_add_product_button_x, y=position_add_product_button_y)
+add_product_button_width = ProductButtonAdd.winfo_reqwidth()
+add_product_button_height = ProductButtonAdd.winfo_reqheight()
+
+# Отступ между кнопками
+button_spacing = 12
+
+# Общая ширина двух кнопок с отступом
+total_buttons_width = add_product_button_width * 2 + button_spacing
+
+# Позиционирование по Y (одинаково для обеих кнопок)
+position_y = (frame_height_product - add_product_button_height) // 2
+
+# Позиционирование по X для первой кнопки (левая)
+position_button_add_x = (frame_width_product - total_buttons_width) // 2
+
+# Позиционирование по X для второй кнопки (правая)
+position_button_create_x = position_button_add_x + add_product_button_width + button_spacing
+
+# Размещаем кнопки в основном фрейме
+ProductButtonAdd.place(x=position_button_add_x, y=position_y)
+ProductButtonCreate.place(x=position_button_create_x, y=position_y)
+
+
 
 SettingsFrame = CTkFrame(MainWindow,
                          width=580,
