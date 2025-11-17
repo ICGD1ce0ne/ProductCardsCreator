@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from customtkinter import CTkFrame, CTkLabel, CTkButton, CTkScrollableFrame
+from customtkinter import CTkFrame, CTkLabel, CTkButton, CTkScrollableFrame, CTkRadioButton
 
 MainWindow = ctk.CTk()
 
@@ -112,7 +112,7 @@ button_spacing = 12
 # Общая ширина двух кнопок с отступом
 total_buttons_width = add_product_button_width * 2 + button_spacing
 
-# Позиционирование по Y (одинаково для обеих кнопок)
+# Позиционирование по Y
 position_y = (frame_height_product - add_product_button_height) // 2
 
 # Позиционирование по X для первой кнопки (левая)
@@ -144,5 +144,23 @@ label_width_settings = SettingsLabel.winfo_reqwidth()
 position_settings_label = (frame_width_settings - label_width_settings) // 2
 
 SettingsLabel.place(x=position_settings_label, y=position_product_label_y)
+
+LargeRadioButton = CTkRadioButton(SettingsFrame,
+                                  width=120,
+                                  height=40,
+                                  text_color='#FFFFFF',
+                                  text="Большой (55x55мм)")
+LargeRadioButton.place(x=position_settings_label, y=position_product_label_y + 30)
+
+MediumRadioButton = CTkRadioButton(SettingsFrame,
+                                   width=120,
+                                   height=40,
+                                   text_color='#FFFFFF',
+                                   text="Средний")
+
+MainWindow.update()
+LargerRadioButtonY = LargeRadioButton.winfo_reqheight()
+
+MediumRadioButton.place(x=position_settings_label, y=LargerRadioButtonY + 50)
 
 MainWindow.mainloop()
