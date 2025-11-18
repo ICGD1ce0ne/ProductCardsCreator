@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from customtkinter import CTkFrame, CTkLabel, CTkButton, CTkScrollableFrame, CTkRadioButton
+from dialog_window import CreateDialog
 
 MainWindow = ctk.CTk()
 
@@ -29,7 +30,18 @@ total_left_height = (product_label_height + product_scroll_height +
 # Высота для правого фрейма
 settings_frame_height = total_left_height
 
+ProductCardSize = ctk.StringVar(value="")
 
+def update_product_card_size():
+    print(f"Выбран размер: {ProductCardSize.get()}")
+
+
+def open_create_dialog():
+    if not ProductCardSize.get():
+        print("Пожалуйста, выберите размер карточки")
+        return
+
+    dialog = CreateDialog(MainWindow, ProductCardSize.get())
 
 ProductLabelFrame = CTkFrame(MainWindow,
                              width=860,
@@ -83,16 +95,17 @@ ProductButtonAdd = CTkButton(ProductAddButtonFrame,
                              height=55,
                              text_color='#FFFFFF',
                              font=('Arial', 18),
-                             text="Добавить",
+                             text="Добавить товар",
                              fg_color='#540070',
-                             corner_radius=9)
+                             corner_radius=9,
+                             command=open_create_dialog)
 
 ProductButtonCreate = CTkButton(ProductAddButtonFrame,
                                 width=330,
                                 height=55,
                                 text_color='#FFFFFF',
                                 font=('Arial', 18),
-                                text="Создать",
+                                text="Создать файл",
                                 fg_color='#540070',
                                 corner_radius=9)
 
@@ -149,18 +162,38 @@ LargeRadioButton = CTkRadioButton(SettingsFrame,
                                   width=120,
                                   height=40,
                                   text_color='#FFFFFF',
-                                  text="Большой (55x55мм)")
+                                  text="Большой (55x55мм)",
+                                  variable=ProductCardSize,
+                                  value="Large",
+                                  command=update_product_card_size)
 LargeRadioButton.place(x=position_settings_label, y=position_product_label_y + 30)
 
 MediumRadioButton = CTkRadioButton(SettingsFrame,
                                    width=120,
                                    height=40,
                                    text_color='#FFFFFF',
-                                   text="Средний")
+                                   text="Средний",
+                                   variable=ProductCardSize,
+                                   value="Medium",
+                                   command=update_product_card_size)
 
 MainWindow.update()
 LargerRadioButtonY = LargeRadioButton.winfo_reqheight()
 
-MediumRadioButton.place(x=position_settings_label, y=LargerRadioButtonY + 50)
+MediumRadioButton.place(x=position_settings_label, y=LargerRadioButtonY + position_product_label_y + 30)
+
+SmallRadioButton = CTkRadioButton(SettingsFrame,
+                                   width=120,
+                                   height=40,
+                                   text_color='#FFFFFF',
+                                   text="Маленький",
+                                  variable=ProductCardSize,
+                                  value="Small",
+                                  command=update_product_card_size)
+
+MainWindow.update()
+MediumRadioButtonY = MediumRadioButton.winfo_reqheight()
+
+SmallRadioButton.place(x=position_settings_label, y=LargerRadioButtonY + position_product_label_y + MediumRadioButtonY + 30)
 
 MainWindow.mainloop()
